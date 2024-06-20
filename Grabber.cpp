@@ -41,12 +41,8 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
-	if (PhysicsHandle == nullptr)
-	{
-		return;
-	}
 
-	if (PhysicsHandle->GetGrabbedComponent() != nullptr)
+	if (PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
 	{
 		FVector TargetLocation = GetComponentLocation() + GetForwardVector() * HoldDistance;
 		PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
@@ -92,7 +88,11 @@ UE_LOG(LogTemp, Display, TEXT("Time: %f"), TimeSec);*/
 	if (HasHit)
 	{
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		HitComponent->SetSimulatePhysics(true);
 		HitComponent->WakeAllRigidBodies();
+		AActor* HitActor = HitResult.GetActor();
+		HitActor->Tags.Add("Grabbed");
+		HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
 			HitComponent,
 			NAME_None,
@@ -136,14 +136,17 @@ void UGrabber::Release()
 	// UE_LOG(LogTemp, Display, TEXT("Released grabber"))
 	UPhysicsHandleComponent* PhysicsHandle = GetPhysicsHandle();
 
-	if (PhysicsHandle == nullptr)
+	// Az ez alatt lévő (nem kikommentezett) kód optimalizáltabban vizsgálja, hogy nullptr bármelyik változó
+	/*if (PhysicsHandle == nullptr)
 	{
-		return;;
-	}
-	
-	if (PhysicsHandle->GetGrabbedComponent() != nullptr)
+		return;
+	}*/
+	// először mindig az alap pointert kell vizsgálni, különben ki crashel az engine
+	if (PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
 	{
 		PhysicsHandle->GetGrabbedComponent()->WakeAllRigidBodies();
+		AActor* GrabbedActor = PhysicsHandle->GetGrabbedComponent()->GetOwner();
+		GrabbedActor->Tags.Remove("Grabbed");
 		PhysicsHandle->ReleaseComponent();
 	}
 	
