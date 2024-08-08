@@ -14,3 +14,11 @@ ATank::ATank()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 }
+
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	// APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	
+}
