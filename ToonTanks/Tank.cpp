@@ -5,6 +5,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "EnhancedInputSubsystems.h"
+
 
 ATank::ATank()
 {
@@ -19,6 +21,11 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	// APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			
+		}
+	}
 }

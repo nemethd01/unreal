@@ -6,6 +6,8 @@
 #include "BasePawn.h"
 #include "Tank.generated.h"
 
+
+
 // Forward declarations
 class UInputMappingContext;
 class USpringArmComponent;
@@ -23,10 +25,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	
-	// void MoveForward(float Value);
-	//
-	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
-	// UInputMappingContext* InputMapping;
+	void MoveForward(float Value);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
+	UInputMappingContext* InputMapping;
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
