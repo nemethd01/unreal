@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "BasePawn.h"
-#include "Tank.generated.h"
+#include "InputActionValue.h"
+#include "Tank.generated.h" // ennek kell legalul lennie mindig
 
 
 
@@ -12,6 +13,7 @@
 class UInputMappingContext;
 class USpringArmComponent;
 class UCameraComponent;
+class UInputAction;
 
 
 UCLASS()
@@ -22,13 +24,22 @@ class TOONTANKS_API ATank : public ABasePawn
 public:
 	ATank();
 
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 	virtual void BeginPlay() override;
 	
-	void MoveForward(float Value);
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
 	UInputMappingContext* InputMapping;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
+	UInputAction* MoveAction;
+
+	// Handle move input
+	void Move(const FInputActionValue& Value);
+	// Handle look input
+	void Look(const FInputActionValue& Value);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
