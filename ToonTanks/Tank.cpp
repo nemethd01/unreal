@@ -8,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 
 ATank::ATank()
@@ -17,6 +18,8 @@ ATank::ATank()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
 void ATank::BeginPlay()
@@ -31,17 +34,18 @@ void ATank::BeginPlay()
 		{
 			// Clear out existing mapping, and add our mapping
 			Subsystem->ClearAllMappings();
-			Subsystem->AddMappingContext(InputMapping, 0);
+			Subsystem->AddMappingContext(TankMappingContext, 0);
 		}
 	}
 }
 
 void ATank::Move(const FInputActionValue& Value)
 {
-	const bool CurrentValue = Value.Get<bool>();
-	if (CurrentValue)
+	const float DirectionValue = Value.Get<float>();
+	if (Controller && (DirectionValue != 0.f))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+		FVector Forward = GetActorForwardVector();
+		AddMovementInput(Forward, DirectionValue);
 	}
 }
 

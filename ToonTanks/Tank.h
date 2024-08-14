@@ -14,6 +14,7 @@ class UInputMappingContext;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
+class UPawnMovementComponent;
 
 
 UCLASS()
@@ -31,10 +32,13 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
-	UInputMappingContext* InputMapping;
+	UInputMappingContext* TankMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
 	UInputAction* MoveAction;
+
+	UPROPERTY(VisibleAnywhere)
+	UPawnMovementComponent* MovementComponent;
 
 	// Handle move input
 	void Move(const FInputActionValue& Value);
