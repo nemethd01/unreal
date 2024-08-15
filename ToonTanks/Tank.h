@@ -43,7 +43,7 @@ protected:
 	// Handle move input
 	void Move(const FInputActionValue& Value);
 	// Handle look input
-	void Look(const FInputActionValue& Value);
+	// void Look(const FInputActionValue& Value);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")

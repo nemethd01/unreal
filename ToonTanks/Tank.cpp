@@ -39,13 +39,56 @@ void ATank::BeginPlay()
 	}
 }
 
+/*void ATank::Move(const FInputActionValue& Value)
+ // Ez egy egyszerűbb és olvashatóbb megközelítés, de nem optimalizált. Egy teljesítményigényesebb játéknál, ahol többször van használva ez a megközelítés, ott lehetnek optimalizációs problémák.
+ // Ezzel szemben a Matrixos megoldás optimalizáltabb, de komplexebb megközelítése van.
+{
+	const FVector2d MoveVector = Value.Get<FVector2d>();
+	const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
+
+	// Forward/Backward direction
+	if (MoveVector.Y != 0.f)
+	{
+		// Get forward vector
+		const FVector Direction = MovementRotation.RotateVector(FVector::ForwardVector);
+ 
+		AddMovementInput(Direction, MoveVector.Y);
+	}
+ 
+	// Right/Left direction
+	if (MoveVector.X != 0.f)
+	{
+		// Get right vector
+		const FVector Direction = MovementRotation.RotateVector(FVector::RightVector);
+ 
+		AddMovementInput(Direction, MoveVector.X);
+	}
+}*/
+
 void ATank::Move(const FInputActionValue& Value)
 {
-	const float DirectionValue = Value.Get<float>();
-	if (Controller && (DirectionValue != 0.f))
+	const FVector2d MoveVector = Value.Get<FVector2d>();
+	
+	if (Controller)
 	{
-		FVector Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirectionValue);
+		const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
+
+		// Get forward vector
+		const FVector ForwardDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::X);
+		// Get right vector
+		const FVector RightDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::Y);
+		
+		// Forward/Backward direction
+		if (MoveVector.Y != 0.f)
+		{
+			AddMovementInput(ForwardDirection, MoveVector.Y);
+		}
+	 
+		// Right/Left direction
+		if (MoveVector.X != 0.f)
+		{
+			AddMovementInput(RightDirection, MoveVector.X);
+		}
 	}
 }
 
