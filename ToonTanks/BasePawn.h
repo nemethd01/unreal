@@ -15,7 +15,8 @@ public:
 	// Sets default values for this pawn's properties
 	ABasePawn();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	// Gyakorlás
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int32 VisibleAnywhereInt = 12;
 	
 	UPROPERTY(EditAnywhere, Category = "Super Variables", BlueprintReadOnly)
@@ -34,7 +35,7 @@ public:
 	int32 EditInstanceOnlyInt = 14;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Speed = 400.f;
+	float Speed = 400.f;*/
 	
 protected:
 	// Called when the game starts or when spawned

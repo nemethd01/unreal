@@ -73,21 +73,21 @@ void ATank::Move(const FInputActionValue& Value)
 	{
 		const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
 
-		// Get forward vector
+		// Get forward and right vectors
 		const FVector ForwardDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::X);
-		// Get right vector
+		
 		const FVector RightDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::Y);
 		
 		// Forward/Backward direction
 		if (MoveVector.Y != 0.f)
 		{
-			AddMovementInput(ForwardDirection, MoveVector.Y);
+			AddMovementInput(ForwardDirection, MoveVector.Y * Speed * GetWorld()->GetDeltaSeconds());
 		}
-	 
-		// Right/Left direction
+
+		// Right/Left direction with speed
 		if (MoveVector.X != 0.f)
 		{
-			AddMovementInput(RightDirection, MoveVector.X);
+			AddMovementInput(RightDirection, MoveVector.X * Speed * GetWorld()->GetDeltaSeconds());
 		}
 	}
 }

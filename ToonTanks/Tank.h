@@ -40,6 +40,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UPawnMovementComponent* MovementComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float Speed = 200.f;
+
 	// Handle move input
 	void Move(const FInputActionValue& Value);
 	// Handle look input
