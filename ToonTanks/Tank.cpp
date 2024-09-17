@@ -71,26 +71,42 @@ void ATank::Move(const FInputActionValue& Value)
 	
 	if (Controller)
 	{
-		const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
+		// FPS - Ez a megközelítés a kamerát vagy a játékos irányítását veszi alapul, így a mozgás a kamera/vezérlő irányába történik, nem pedig a tank aktuális fizikai pozíciójának forgása alapján. Ez általában jellemző egy "FPS" vagy "TPP" játékban, ahol a kamera vezérli a mozgást, és az irányítás érzése kevésbé hangsúlyos a járművek mozgásához képest.
+		// const FRotator MovementRotation(0, Controller->GetControlRotation().Yaw, 0);
 
+		// Ez a jármű szerű megközelítés - Get the tank's current rotation (yaw) to move in the forward/backward direction of the tank
+		const FRotator MovementRotation = GetActorRotation(); 
+
+		
 		// Get forward and right vectors
 		const FVector ForwardDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::X);
 		
-		const FVector RightDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::Y);
+		// const FVector RightDirection = FRotationMatrix(MovementRotation).GetUnitAxis(EAxis::Y);
 		
-		// Forward/Backward direction
+		// Forward/Backward direction with speed
 		if (MoveVector.Y != 0.f)
 		{
 			AddMovementInput(ForwardDirection, MoveVector.Y * Speed * GetWorld()->GetDeltaSeconds());
 		}
 
 		// Right/Left direction with speed
-		if (MoveVector.X != 0.f)
+		/*if (MoveVector.X != 0.f)
 		{
 			AddMovementInput(RightDirection, MoveVector.X * Speed * GetWorld()->GetDeltaSeconds());
-		}
+		}*/
 	}
 }
+
+void ATank::Turn(const FInputActionValue& Value)
+{
+	// Tank rotation on the yaw axis (left/right)
+	float TurnValue = Value.Get<float>();
+
+	FRotator RotationDelta = FRotator(0.f, TurnValue * TurnSpeed * GetWorld()->GetDeltaSeconds(), 0.f);
+
+	AddActorLocalRotation(RotationDelta, true);
+}
+
 
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -99,5 +115,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATank::Move);
+		EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ATank::Turn);
 	}
 }

@@ -37,16 +37,26 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
 	UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
+	UInputAction* TurnAction;
+
 	UPROPERTY(VisibleAnywhere)
 	UPawnMovementComponent* MovementComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Speed = 200.f;
 
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	float TurnSpeed = 100.f;
+
 	// Handle move input
 	void Move(const FInputActionValue& Value);
+	
 	// Handle look input
 	// void Look(const FInputActionValue& Value);
+	
+	// Handle Turn input for Tank
+	void Turn(const FInputActionValue& Value);
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
