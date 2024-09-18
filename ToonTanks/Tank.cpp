@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
-
+#include "DrawDebugHelpers.h"
 
 ATank::ATank()
 {
@@ -20,6 +20,31 @@ ATank::ATank()
 	Camera->SetupAttachment(SpringArm);
 	
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
+}
+
+// Called every frame
+void ATank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	FHitResult HitResult;
+
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		// Ellenőrizzük, hogy sikerült-e elérni
+		if (PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		{
+			DrawDebugSphere(
+				GetWorld(),
+				HitResult.ImpactPoint,
+				25.f,
+				12,
+				FColor::Red,
+				false,
+				-1.f
+			);
+		}
+	}
 }
 
 void ATank::BeginPlay()
