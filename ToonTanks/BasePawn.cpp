@@ -3,6 +3,7 @@
 
 #include "BasePawn.h"
 #include "Components/CapsuleComponent.h" // Forward deklarálva van
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -22,6 +23,21 @@ ABasePawn::ABasePawn()
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
 }
+
+// Turret Rotation for Tank
+void ABasePawn::RotateTurret(FVector LookAtTarget)
+{
+	FVector ToTarget = LookAtTarget - TurretMesh->GetComponentLocation();
+	FRotator LookAtLocation = FRotator(0.f, ToTarget.Rotation().Yaw, 0.f);
+	
+	TurretMesh->SetWorldRotation(
+		FMath::RInterpTo(TurretMesh->GetComponentRotation(),
+		LookAtLocation,
+		UGameplayStatics::GetWorldDeltaSeconds(this),
+		15.f)
+	);
+}
+
 
 // Called when the game starts or when spawned
 /*void ABasePawn::BeginPlay()

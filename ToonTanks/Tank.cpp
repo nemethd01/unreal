@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
-#include "DrawDebugHelpers.h"
+// #include "DrawDebugHelpers.h"
 
 ATank::ATank()
 {
@@ -34,7 +34,7 @@ void ATank::Tick(float DeltaTime)
 		// Ellenőrizzük, hogy sikerült-e elérni
 		if (PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
 		{
-			DrawDebugSphere(
+			/*DrawDebugSphere(
 				GetWorld(),
 				HitResult.ImpactPoint,
 				25.f,
@@ -42,7 +42,9 @@ void ATank::Tick(float DeltaTime)
 				FColor::Red,
 				false,
 				-1.f
-			);
+			);*/
+
+			RotateTurret(HitResult.ImpactPoint);
 		}
 	}
 }

@@ -37,11 +37,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed = 400.f;*/
 	
-/*protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;*/
 
+	// Called every frame
+	// virtual void Tick(float DeltaTime) override;
 
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	void RotateTurret(FVector LookAtTarget);
+
+	
 private:
 	// ez a fajta meta megoldás nem gyakran használatos, inkább akkor protected, vagy publicba kellene tenni a változókat
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
@@ -55,12 +61,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Super Variables", meta = (AllowPrivateAccess = "true"))
 	int32 VisibleAnywhereTestInt = 99;
-
-public:	
-	// Called every frame
-	// virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
