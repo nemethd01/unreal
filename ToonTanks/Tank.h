@@ -43,6 +43,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
 	UInputAction* TurnAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Enhanced Input")
+	UInputAction* FireAction;
+
 	UPROPERTY(VisibleAnywhere)
 	UPawnMovementComponent* MovementComponent;
 

@@ -46,7 +46,7 @@ public:
 
 protected:
 	void RotateTurret(FVector LookAtTarget);
-
+	void Fire();
 	
 private:
 	// ez a fajta meta megoldás nem gyakran használatos, inkább akkor protected, vagy publicba kellene tenni a változókat
