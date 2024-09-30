@@ -62,4 +62,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Super Variables", meta = (AllowPrivateAccess = "true"))
 	int32 VisibleAnywhereTestInt = 99;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TSubclassOf<class AProjectile> ProjectileClass; // Itt is lehet forward deklarálni
 };

@@ -4,7 +4,8 @@
 #include "BasePawn.h"
 #include "Components/CapsuleComponent.h" // Forward deklarálva van
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
+// #include "DrawDebugHelpers.h"
+#include "Projectile.h"
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -64,7 +65,8 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ABasePawn::Fire()
 {
 	FVector ProjectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
-	DrawDebugSphere(
+	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
+	/*DrawDebugSphere(
 		GetWorld(),
 		ProjectileSpawnPointLocation,
 		25.f,
@@ -72,5 +74,7 @@ void ABasePawn::Fire()
 		FColor::Red,
 		false,
 		3.f
-	);
+	);*/
+
+	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPointLocation, Rotation);
 }
