@@ -64,7 +64,7 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABasePawn::Fire()
 {
-	FVector ProjectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
+	/*FVector ProjectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
 	/*DrawDebugSphere(
 		GetWorld(),
@@ -74,7 +74,29 @@ void ABasePawn::Fire()
 		FColor::Red,
 		false,
 		3.f
-	);*/
+	);#1#
 
-	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPointLocation, Rotation);
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPointLocation, Rotation);
+	Projectile->SetOwner(this);
+
+
+	if (!ProjectileClass) // Győződj meg róla, hogy a ProjectileClass érvényes
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ProjectileClass is null!"));
+		return;
+	}*/
+
+	FVector ProjectileSpawnPointLocation = ProjectileSpawnPoint->GetComponentLocation();
+	FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPointLocation, Rotation, SpawnParams);
+    
+	if (Projectile)
+	{
+		Projectile->SetOwner(this);
+	}
 }
