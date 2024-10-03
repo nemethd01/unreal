@@ -29,10 +29,11 @@ void ATank::Tick(float DeltaTime)
 
 	FHitResult HitResult;
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	TankPlayerController = Cast<APlayerController>(GetController());
+	if (TankPlayerController)
 	{
 		// Ellenőrizzük, hogy sikerült-e elérni
-		if (PlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
+		if (TankPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, HitResult))
 		{
 			/*DrawDebugSphere(
 				GetWorld(),
@@ -49,15 +50,23 @@ void ATank::Tick(float DeltaTime)
 	}
 }
 
+void ATank::HandleDestruction()
+{
+	Super::HandleDestruction();
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+}
+
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Get the player controller
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	// Get the player controller and store it in the PlayerController variable
+	TankPlayerController = Cast<APlayerController>(GetController());
+	if (TankPlayerController)
 	{
 		// Get the local player subsystem
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(TankPlayerController->GetLocalPlayer()))
 		{
 			// Clear out existing mapping, and add our mapping
 			Subsystem->ClearAllMappings();
