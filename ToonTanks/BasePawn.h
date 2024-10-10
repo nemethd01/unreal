@@ -66,4 +66,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<class AProjectile> ProjectileClass; // Itt is lehet forward deklarálni
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UParticleSystem* DeathParticles;
 };
