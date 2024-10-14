@@ -34,6 +34,8 @@ public:
 	void HandleDestruction();
 
 	APlayerController* GetTankPlayerController() const { return TankPlayerController; }
+
+	bool bAlive = true;
 	
 protected:
 	virtual void BeginPlay() override;
